@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Student View</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>
+            <h1> Hello, {{ person_name }} </h1>
+        </div>
+        <div>
+            <a href="{{ url_for('index') }}" class="back-to-login">Log Out</a>
+        </div>
+        <div>
+            <a href="{{ url_for('get_all_courses') }}" class="all-courses">View All Courses</a>
+        </div>
+        <div>
+            <a href="{{ url_for('student_courses') }}" class="student-courses">View Your Courses</a>
+        </div>
+    </body>
+</html>

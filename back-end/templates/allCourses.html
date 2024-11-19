@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>All Courses</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        async function studentRegister(course_id) {
+            try {
+                // Send a POST request to register the student
+                const response = await fetch(`/register_for_course/${course_id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ course_id: course_id })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to register for course');
+                }
+
+                // Notify the user and reload the page to reflect the updated enrollment status
+                alert('Successfully registered for the course!');
+                window.location.reload();
+            } catch (error) {
+                console.error('Error registering for course:', error);
+                alert('Error registering for course. Please try again later.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <a href="javascript:history.back()" class="return">Return</a>
+    <h1>All Courses</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Course Name</th>
+                <th>Course Number</th>
+                <th>Professor</th>
+                <th>Capacity</th>
+                <th>Enrolled Students</th>
+                <th>Has Capacity</th>
+                <th>Sign Up</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ course.course_name }}</td>
+                <td>{{ course.course_number }}</td>
+                <td>{{ course.professor }}</td>
+                <td>{{ course.capacity }}</td>
+                <td>{{ course.enrolled_students }}</td>
+                <td>{{ 'Yes' if course.enrolled_students < course.capacity else 'No' }}</td>
+<!--                <td>-->
+<!--                    {% if course.enrolled_students < course.capacity %}-->
+<!--                        <button onclick="studentRegister({{ course.id | tojson }})">Register</button>-->
+<!--                    {% else %}-->
+<!--                        Cannot Register-->
+<!--                    {% endif %}-->
+<!--                </td>-->
+                <td>
+                    {% if course.id in enrolled_course_ids %}
+                        Already Registered
+                    {% elif course.enrolled_students < course.capacity %}
+                        <button onclick="studentRegister({{ course.id | tojson }})">Register</button>
+                    {% else %}
+                        Cannot Register
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

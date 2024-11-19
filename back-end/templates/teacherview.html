@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Professor View</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>
+            <h1> Welcome {{ person_name }} </h1>
+        </div>
+        <div>
+            <!-- Use the URL for the index route -->
+            <a href="{{ url_for('index') }}" class="back-to-login">Log Out</a>
+        </div>
+            <!--- Starting this part --->
+        <div>
+            <!--- -->
+            <a href="{{ url_for('get_teacher_courses') }}" class="teacher-courses">View Your Courses</a>
+        </div>
+
+    </body>
+</html>

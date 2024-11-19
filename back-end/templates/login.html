@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            // Function to display flash message in a popup
+            function showPopup(message) {
+                alert(message); // Simple popup using alert()
+            }
+        </script>
+    </head>
+
+    <body>
+        <form action="/login" method="POST">
+            <input name="username" type="text" placeholder="Enter Username" required>
+            <input name="password" type="text" placeholder="Enter Password" required>
+            <button type="submit">Login</button>
+
+            <div>
+                <a href="/create_acc_page" class="create-acc-btn">Create Account</a>
+            </div>
+        </form>
+
+    <!-- Display any flash messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script>
+                // Show the first flash message in a popup (the most recent one)
+                showPopup("{{ messages[0] }}");
+            </script>
+        {% endif %}
+    {% endwith %}
+
+    </body>
+</html>

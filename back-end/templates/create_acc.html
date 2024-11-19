@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Create Account</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            // Function to display flash message in a popup
+            function showPopup(message) {
+                alert(message); // Simple popup using alert()
+            }
+        </script>
+    </head>
+
+    <body>
+        <form action="/create_acc" method="POST">
+            <div>
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" placeholder="Enter Username" required>
+                <input name="person_name" type="text" placeholder="Enter name of user" required>
+                <input name="password" type="text" placeholder="Enter your password" required>
+                <select name="user_type">
+                    <option value="Student">Student</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Admin">Admin</option>
+                </select>
+                <button type="submit">Create Account</button>
+            </div>
+        </form>
+        <a href="{{ url_for('index') }}" class="back-to-login">Back to Login</a>
+
+    <!-- Display any flash messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script>
+                // Show the first flash message in a popup (the most recent one)
+                showPopup("{{ messages[0] }}");
+            </script>
+        {% endif %}
+    {% endwith %}
+    </body>
+</html>
