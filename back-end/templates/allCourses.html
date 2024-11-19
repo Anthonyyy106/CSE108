@@ -1,19 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>All Courses</title>
+    <title>UC Merced All Courses</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #002147; /* Dark blue background */
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #FFD700; /* Gold text */
+            margin-bottom: 20px;
+        }
+
+        .return {
+            margin-bottom: 20px;
+            color: #FFD700;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            background: none;
+            border: 2px solid #FFD700;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .return:hover {
+            background: #FFD700; /* Gold background */
+            color: #002147; /* Dark blue text */
+        }
+
         table {
             width: 100%;
+            max-width: 800px;
             border-collapse: collapse;
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.1); /* Translucent background */
+            border: 1px solid #FFD700; /* Gold border */
+            border-radius: 5px;
+            overflow: hidden;
         }
+
         th, td {
-            border: 1px solid black;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
+            border: 1px solid #FFD700; /* Gold borders */
         }
+
         th {
-            background-color: #f2f2f2;
+            background: #FFD700; /* Gold background */
+            color: #002147; /* Dark blue text */
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.1); /* Subtle alternating row color */
+        }
+
+        button {
+            background: #FFD700; /* Gold background */
+            color: #002147; /* Dark blue text */
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #FFC300; /* Slightly lighter gold */
+        }
+
+        .disabled-button {
+            background: rgba(255, 255, 255, 0.2); /* Disabled style */
+            color: #999;
+            cursor: not-allowed;
         }
     </style>
     <script>
@@ -66,20 +136,13 @@
                 <td>{{ course.capacity }}</td>
                 <td>{{ course.enrolled_students }}</td>
                 <td>{{ 'Yes' if course.enrolled_students < course.capacity else 'No' }}</td>
-<!--                <td>-->
-<!--                    {% if course.enrolled_students < course.capacity %}-->
-<!--                        <button onclick="studentRegister({{ course.id | tojson }})">Register</button>-->
-<!--                    {% else %}-->
-<!--                        Cannot Register-->
-<!--                    {% endif %}-->
-<!--                </td>-->
                 <td>
                     {% if course.id in enrolled_course_ids %}
-                        Already Registered
+                        <button class="disabled-button" disabled>Already Registered</button>
                     {% elif course.enrolled_students < course.capacity %}
                         <button onclick="studentRegister({{ course.id | tojson }})">Register</button>
                     {% else %}
-                        Cannot Register
+                        <button class="disabled-button" disabled>Cannot Register</button>
                     {% endif %}
                 </td>
             </tr>
@@ -88,3 +151,94 @@
     </table>
 </body>
 </html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <title>All Courses</title>-->
+<!--    <style>-->
+<!--        table {-->
+<!--            width: 100%;-->
+<!--            border-collapse: collapse;-->
+<!--        }-->
+<!--        th, td {-->
+<!--            border: 1px solid black;-->
+<!--            padding: 8px;-->
+<!--            text-align: left;-->
+<!--        }-->
+<!--        th {-->
+<!--            background-color: #f2f2f2;-->
+<!--        }-->
+<!--    </style>-->
+<!--    <script>-->
+<!--        async function studentRegister(course_id) {-->
+<!--            try {-->
+<!--                // Send a POST request to register the student-->
+<!--                const response = await fetch(`/register_for_course/${course_id}`, {-->
+<!--                    method: 'POST',-->
+<!--                    headers: {-->
+<!--                        'Content-Type': 'application/json',-->
+<!--                    },-->
+<!--                    body: JSON.stringify({ course_id: course_id })-->
+<!--                });-->
+
+<!--                if (!response.ok) {-->
+<!--                    throw new Error('Failed to register for course');-->
+<!--                }-->
+
+<!--                // Notify the user and reload the page to reflect the updated enrollment status-->
+<!--                alert('Successfully registered for the course!');-->
+<!--                window.location.reload();-->
+<!--            } catch (error) {-->
+<!--                console.error('Error registering for course:', error);-->
+<!--                alert('Error registering for course. Please try again later.');-->
+<!--            }-->
+<!--        }-->
+<!--    </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <a href="javascript:history.back()" class="return">Return</a>-->
+<!--    <h1>All Courses</h1>-->
+<!--    <table>-->
+<!--        <thead>-->
+<!--            <tr>-->
+<!--                <th>Course Name</th>-->
+<!--                <th>Course Number</th>-->
+<!--                <th>Professor</th>-->
+<!--                <th>Capacity</th>-->
+<!--                <th>Enrolled Students</th>-->
+<!--                <th>Has Capacity</th>-->
+<!--                <th>Sign Up</th>-->
+<!--            </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--            {% for course in courses %}-->
+<!--            <tr>-->
+<!--                <td>{{ course.course_name }}</td>-->
+<!--                <td>{{ course.course_number }}</td>-->
+<!--                <td>{{ course.professor }}</td>-->
+<!--                <td>{{ course.capacity }}</td>-->
+<!--                <td>{{ course.enrolled_students }}</td>-->
+<!--                <td>{{ 'Yes' if course.enrolled_students < course.capacity else 'No' }}</td>-->
+<!--&lt;!&ndash;                <td>&ndash;&gt;-->
+<!--&lt;!&ndash;                    {% if course.enrolled_students < course.capacity %}&ndash;&gt;-->
+<!--&lt;!&ndash;                        <button onclick="studentRegister({{ course.id | tojson }})">Register</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                    {% else %}&ndash;&gt;-->
+<!--&lt;!&ndash;                        Cannot Register&ndash;&gt;-->
+<!--&lt;!&ndash;                    {% endif %}&ndash;&gt;-->
+<!--&lt;!&ndash;                </td>&ndash;&gt;-->
+<!--                <td>-->
+<!--                    {% if course.id in enrolled_course_ids %}-->
+<!--                        Already Registered-->
+<!--                    {% elif course.enrolled_students < course.capacity %}-->
+<!--                        <button onclick="studentRegister({{ course.id | tojson }})">Register</button>-->
+<!--                    {% else %}-->
+<!--                        Cannot Register-->
+<!--                    {% endif %}-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            {% endfor %}-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</body>-->
+<!--</html>-->

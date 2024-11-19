@@ -48,7 +48,24 @@ class CourseModelView(SecureModelView):
 
 # Customized EnrollmentModelView
 class EnrollmentModelView(SecureModelView):
-    inline_models = [(User, dict(form_columns=['username'])), (Course, dict(form_columns=['course_name']))]
+    form_columns = ['user_id', 'course_id']  # Ensure only valid fields are used
+    inline_models = [
+        (User, dict(form_columns=['id', 'username'])),
+        (Course, dict(form_columns=['id', 'course_name']))
+    ]
+
+    def on_model_change(self, form, model, is_created):
+        if not model.user_id or not model.course_id:
+            raise ValueError("Both user_id and course_id must be set for an Enrollment.")
+
+
+# Customized StudentModelView
+class StudentModelView(SecureModelView):
+    column_list = ('id', 'student_name', 'grade', 'enrollment_id')
+    column_searchable_list = ('student_name',)
+    column_filters = ('grade',)
+    can_delete = True  # Enable deletion
+    form_columns = ['student_name', 'grade', 'enrollment_id']
 
 # Initialize Flask-Admin
 admin = Admin(app, name='Admin Panel', template_mode='bootstrap4')
@@ -65,6 +82,10 @@ def index():
 @app.route('/create_acc_page')
 def create_acc_page():
     return render_template('create_acc.html')
+
+@app.route('/all_courses')
+def all_courses():
+    return render_template('allCourses.html')
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -203,7 +224,7 @@ def get_teacher_courses():
     # Query the courses taught by the teacher (professor)
     courses = Course. query. filter_by(professor=person_name).all()
 
-    return render_template('teacher_courses.html', person_name=person_name, courses=courses, username=username)
+    return render_template('teacher_courses', person_name=person_name, courses=courses, username=username)
 
 
 @app.route('/course/<int:course_id>', methods=['GET'])
@@ -219,7 +240,15 @@ def view_course(course_id):
         Student.student_name,
         Student.grade
     ).all()
-
+    # enrollments = (
+    #     Enrollment.query.filter_by(course_id=course_id)
+    #     .join(Student, Enrollment.id == Student.enrollment_id)
+    #     .with_entities(
+    #         Student.id,  # Fetch the student ID
+    #         Student.student_name,  # Fetch the student name
+    #         Student.grade  # Fetch the student grade
+    #     )
+    #     .all())
     return render_template('view_course.html', course=course, students=enrollments)
 
 @app.route('/update_grade/<int:student_id>', methods=['POST'])

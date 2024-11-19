@@ -1,37 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Login</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script>
-            // Function to display flash message in a popup
-            function showPopup(message) {
-                alert(message); // Simple popup using alert()
-            }
-        </script>
-    </head>
+<head>
+    <title>UC Merced Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #002147; /* Dark blue background */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    <body>
+        .form-container {
+            background: linear-gradient(135deg, #002147, #041E42); /* Subtle gradient of dark blue */
+            border: 2px solid #FFD700; /* Gold border */
+            border-radius: 10px;
+            padding: 30px 40px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-container h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #FFD700; /* Gold text */
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #FFD700;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #002147; /* Dark blue text */
+            background-color: #FFD700; /* Gold background */
+        }
+
+        .form-container input:focus {
+            outline: none;
+            box-shadow: 0 0 4px #FFD700;
+        }
+
+        .form-container button {
+            background: #FFD700; /* Gold background */
+            color: #002147; /* Dark blue text */
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .form-container button:hover {
+            background: #FFC300; /* Slightly lighter gold */
+        }
+
+        .form-container a {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #FFD700;
+            font-size: 14px;
+        }
+
+        .form-container a:hover {
+            text-decoration: underline;
+        }
+
+        .popup-message {
+            color: #ff4c4c;
+            font-size: 14px;
+        }
+    </style>
+    <script>
+        // Function to display flash message in a popup
+        function showPopup(message) {
+            alert(message); // Simple popup using alert()
+        }
+    </script>
+</head>
+
+<body>
+    <div class="form-container">
+        <h1>UC Merced Login</h1>
         <form action="/login" method="POST">
             <input name="username" type="text" placeholder="Enter Username" required>
-            <input name="password" type="text" placeholder="Enter Password" required>
+            <input name="password" type="password" placeholder="Enter Password" required>
             <button type="submit">Login</button>
-
             <div>
                 <a href="/create_acc_page" class="create-acc-btn">Create Account</a>
             </div>
         </form>
 
+        <div class="popup-message" style="display: none;"></div>
+    </div>
+
     <!-- Display any flash messages -->
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <script>
-                // Show the first flash message in a popup (the most recent one)
+                // Show the first flash message in the popup
                 showPopup("{{ messages[0] }}");
             </script>
         {% endif %}
     {% endwith %}
-
-    </body>
+</body>
 </html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--    <head>-->
+<!--        <title>Login</title>-->
+<!--        <meta charset="UTF-8">-->
+<!--        <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--        <script>-->
+<!--            // Function to display flash message in a popup-->
+<!--            function showPopup(message) {-->
+<!--                alert(message); // Simple popup using alert()-->
+<!--            }-->
+<!--        </script>-->
+<!--    </head>-->
+
+<!--    <body>-->
+<!--        <form action="/login" method="POST">-->
+<!--            <input name="username" type="text" placeholder="Enter Username" required>-->
+<!--            <input name="password" type="text" placeholder="Enter Password" required>-->
+<!--            <button type="submit">Login</button>-->
+
+<!--            <div>-->
+<!--                <a href="/create_acc_page" class="create-acc-btn">Create Account</a>-->
+<!--            </div>-->
+<!--        </form>-->
+
+<!--    &lt;!&ndash; Display any flash messages &ndash;&gt;-->
+<!--    {% with messages = get_flashed_messages() %}-->
+<!--        {% if messages %}-->
+<!--            <script>-->
+<!--                // Show the first flash message in a popup (the most recent one)-->
+<!--                showPopup("{{ messages[0] }}");-->
+<!--            </script>-->
+<!--        {% endif %}-->
+<!--    {% endwith %}-->
+
+<!--    </body>-->
+<!--</html>-->
